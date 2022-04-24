@@ -1,0 +1,23 @@
+{
+  "name": "homework5-d7ry",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fullstack-decal/homework5-D7ry.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fullstack-decal/homework5-D7ry/issues"
+  },
+  "homepage": "https://github.com/fullstack-decal/homework5-D7ry#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.3.1"
+  }
+}
