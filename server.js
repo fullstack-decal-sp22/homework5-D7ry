@@ -32,27 +32,61 @@ const apodSchema = Schema({
 const APOD = mongoose.model('APOD', apodSchema)
 
 app.get("/", function (req, res) {
-    res.send("a response!")
+    APOD.find().exec((error, images) => {
+        if (error) {
+            console.log(error)
+            res.send(500)
+        } else {
+            res.json(images)
+        }
+    })
 });
 
 app.get("/favorite", function (req, res) {
   // GET "/favorite" should return our favorite image by highest rating
-    APOD.find().sort({'rating': 'desc'}).exec((error, images) => {
+  APOD.find().sort({'rating': 'desc'}).exec((error, images) => {
     if (error) {
       console.log(error)
       res.send(500)
     } else {
-      res.json({favorite: images[0]})
+      if (images.length === 0) {
+          res.send("No images stored yet!")
+      } else {
+        res.json({favorite: images[0]})
+      }
+      
     }
   })
 })
 
 app.post("/add", function (req, res) {
   // POST "/add" adds an APOD image to our database
+  const a_image = new APOD( {
+      title: req.body.title,
+      url: req.body.url,
+      rating: req.body.rating
+  })
+  a_image.save((error, doc) => {
+      if (error) {
+          res.json({status: "failed", error: error})
+      } else {
+          res.json( {
+              status: "Successfully posted the following image:",
+              content: req.body
+          })
+      }
+  })
+  
 });
 
 app.delete("/delete", function (req, res) {
-  // DELETE "/delete" deletes an image according to the title
+    APOD.findOneAndDelete({title: req.body.title}, (err) => {
+        if (err) {
+            res.json({status: "failed", error: error})
+        } else {
+            res.json({status: "success!", deletedImage: req.body.title})
+        }
+    })
 });
 
 app.listen(port, () => {
